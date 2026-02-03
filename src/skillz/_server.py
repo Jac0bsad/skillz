@@ -179,9 +179,10 @@ class SkillResourceMetadata(TypedDict):
 
 
 def slugify(value: str) -> str:
-    """Convert names into stable slug identifiers."""
-
-    cleaned = re.sub(r"[^a-zA-Z0-9]+", "-", value.strip().lower()).strip("-")
+    """Convert names into stable slug identifiers, preserving Chinese characters."""
+    # Replace whitespace and special characters with hyphens, but preserve Unicode letters and digits
+    # \w in Python regex matches Unicode word characters (letters, digits, underscore)
+    cleaned = re.sub(r"[^\w]+", "-", value.strip(), flags=re.UNICODE).strip("-")
     return cleaned or "skill"
 
 
